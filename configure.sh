@@ -48,8 +48,8 @@ else
 fi
 if [ "${EXISTE_DJANGO}" != "" ]; then
      docker exec "driver-new-tech" ./manage.py collectstatic --noinput
-     docker exec "driver-new-tech" ./manage.py migrate
-     docker exec -it $(docker inspect -f '{{.ID}}' driver-new-tech) python manage.py createsuperuser
+     #docker exec "driver-new-tech" ./manage.py migrate
+     #docker exec -it $(docker inspect -f '{{.ID}}' driver-new-tech) python manage.py createsuperuser
 fi
 if [ $STATIC_ROOT != $WINDSHAFT_FILES ]; then
      sudo cp -r static "$STATIC_ROOT/"

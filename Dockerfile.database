@@ -1,14 +1,29 @@
+# Use the official PostgreSQL 12 image as the base image
 FROM postgres:9.5
 
+# Set the timezone (replace ${TIMEZONE} with your desired timezone)
+RUN sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list
+RUN sed -i s/security.debian.org/archive.debian.org/g /etc/apt/sources.list
+RUN sed -i s/apt.postgresql.org/apt-archive.postgresql.org/g /etc/apt/sources.list.d/pgdg.list
+RUN sed -i s/stretch-updates/stretch/g /etc/apt/sources.list
+
 ENV TZ ${TIMEZONE}
+RUN ls /etc/apt/sources.list.d/
+RUN cat /etc/apt/sources.list.d/pgdg.list
+RUN mv /etc/apt/sources.list.d/pgdg.list /tmp/
+RUN apt-get update
+RUN apt-get install -y apt-transport-https ca-certificates
+RUN mv /tmp/pgdg.list /etc/apt/sources.list.d/pgdg.list
+
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
   postgis-2.5 postgresql-9.5-postgis-2.5-scripts
-# set time zone
+
+
+# Set the timezone in the container
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# add init script
+# Add initialization script for PostGIS
 RUN mkdir -p /docker-entrypoint-initdb.d
 COPY ./initdb-postgis.sh /docker-entrypoint-initdb.d/postgis.sh
-
 

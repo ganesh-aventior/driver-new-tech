@@ -1,6 +1,6 @@
 #!/bin/sh
 
-psql --host=172.18.0.2 --port=5432 --dbname=driver --username=driver <<EOF
+psql --host=172.20.0.3 --port=5432 --dbname=driver --username=driver <<EOF
 insert into data_crashdiagramorientation (uuid, created, modified, crash_type, movement_code, image, is_active) values
 ('8ab82198-3230-499f-a548-5c2f298d895b', '2020-11-24 12:03:48.709023+05:30', '2020-11-24 12:03:48.709048+05:30', 'Pedestrian on foot',
 '104 - Walking with traffic', '{

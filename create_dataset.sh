@@ -2,7 +2,8 @@
 
 while read line; do export "$line"; done < .env
 
-psql --host=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' database) --port=5432 --dbname=driver --username=driver <<EOF
+psql --host=$(docker inspect \
+-f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' database) --port=5432 --dbname=driver --username=driver <<EOF
 
 insert into auth_group (id,name) values (1,'Superadmin'),(2,'Public');
 UPDATE auth_user SET email='superadmin@driver.com', first_name='driver', last_name='driver' WHERE username=(SELECT username FROM auth_user ORDER BY date_joined ASC LIMIT 1);

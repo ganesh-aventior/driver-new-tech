@@ -40,6 +40,7 @@ services:
     ports:
       - 5000:5000
     volumes:
+            #- ${WINDSHAFT_FILES}/windshaft/:/opt/windshaft/
       - ${WINDSHAFT_FILES}/windshaft/driver.js:/opt/windshaft/driver.js
       - ${WINDSHAFT_FILES}/windshaft/healthCheck.js:/opt/windshaft/healthCheck.js
       - ${WINDSHAFT_FILES}/windshaft/alphamarker.png:/opt/windshaft/alphamarker.png
@@ -56,7 +57,7 @@ services:
       - DRIVER_REDIS_HOST=redis-server
       - DRIVER_REDIS_PORT=6379
       - HOST=${HOST_NAME}
-    image: quay.io/azavea/windshaft:0.1.0
+    image: alien9/windshaft:latest
 
   driver-django:
     build:
@@ -100,8 +101,8 @@ services:
       - STATIC_ROOT=/var/www/static/
       - STATIC_URL=${PROTOCOL}://${HOST_NAME}/static/
       - HOST=${HOST_NAME}
-#      - OAUTH_CLIENT_ID=${CLIENTID}
-#      - OAUTH_CLIENT_SECRET=${CLIENT_SECRET}
+      #- OAUTH_CLIENT_ID=""
+      #- OAUTH_CLIENT_SECRET=""
     entrypoint: ["celery", "-A", "DRIVER", "worker", "--queue=taskworker", "--loglevel=info", "--concurrency=4"]
     container_name: driver-celery-${CONTAINER_NAME}
     image: driver-django
